@@ -1,23 +1,33 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
+import { Route, Routes } from "react-router-dom";
+import Login from "./pages/login.page";
+import DashboardPage from "./pages/dashboard.page";
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
 
 function App() {
-  const [data, setData] = React.useState(null);
-
-  React.useEffect(() => {
-    fetch("/api")
-      .then((res) => res.json())
-      .then((data) => setData(data.message));
-  }, []);
+  // const [data, setData] = React.useState(null);
+  //
+  // React.useEffect(() => {
+  //   fetch("/ping")
+  //     .then((res) => res.json())
+  //     .then((data) => setData(data));
+  // }, []);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>{!data ? "Loading..." : data}</p>
-      </header>
-    </div>
+    <ThemeProvider theme={ darkTheme }>
+      <CssBaseline />
+      <Routes>
+        <Route path="/login" element={ <Login/> }/>
+        <Route path="/" element={<DashboardPage />} />
+      </Routes>
+    </ThemeProvider>
   );
 }
 
