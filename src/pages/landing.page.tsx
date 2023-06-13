@@ -2,7 +2,7 @@ import { Button, Grid } from "@mui/material";
 import { Link } from "react-router-dom";
 import IconMenu from "../component/sideBar.component";
 
-export default function DashboardPage() {
+export default function LandingPage() {
   return (
     <Grid container spacing={ 2 } sx={ {height: '100%'} }>
       <Grid item xs={12} sm={2}>

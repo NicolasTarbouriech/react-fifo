@@ -3,7 +3,7 @@ import './App.css';
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import { Route, Routes } from "react-router-dom";
 import Login from "./pages/login.page";
-import DashboardPage from "./pages/dashboard.page";
+import LandingPage from "./pages/landing.page";
 
 const darkTheme = createTheme({
   palette: {
@@ -25,7 +25,7 @@ function App() {
       <CssBaseline />
       <Routes>
         <Route path="/login" element={ <Login/> }/>
-        <Route path="/" element={<DashboardPage />} />
+        <Route path="/" element={<LandingPage />} />
       </Routes>
     </ThemeProvider>
   );
