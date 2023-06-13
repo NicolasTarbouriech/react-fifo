@@ -31,12 +31,14 @@ export default function IconMenu() {
             <ListItemText>Create user</ListItemText>
           </MenuItem>
         </Link>
-        <MenuItem>
-          <ListItemIcon>
-            <CreateIcon fontSize="small"/>
-          </ListItemIcon>
-          <ListItemText>Queue</ListItemText>
-        </MenuItem>
+        <Link style={ {textDecoration: 'unset', color: 'unset'} } to={ '/action' }>
+          <MenuItem>
+            <ListItemIcon>
+              <CreateIcon fontSize="small"/>
+            </ListItemIcon>
+            <ListItemText>Queue</ListItemText>
+          </MenuItem>
+        </Link>
         <Divider/>
         <Link style={ {textDecoration: 'unset', color: 'unset'} } to={ '/login' }>
           <MenuItem>

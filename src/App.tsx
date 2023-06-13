@@ -4,6 +4,7 @@ import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import { Route, Routes } from "react-router-dom";
 import Login from "./pages/login.page";
 import LandingPage from "./pages/landing.page";
+import ActionPage from "./pages/action.page";
 
 const darkTheme = createTheme({
   palette: {
@@ -26,6 +27,7 @@ function App() {
       <Routes>
         <Route path="/login" element={ <Login/> }/>
         <Route path="/" element={<LandingPage />} />
+        <Route path="/action" element={<ActionPage />} />
       </Routes>
     </ThemeProvider>
   );
