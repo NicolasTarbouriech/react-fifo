@@ -1,13 +1,12 @@
 import { Box, Button, Grid, TextField } from "@mui/material";
 import IconMenu from "../component/sideBar.component";
-import React, { SyntheticEvent, useState } from "react";
+import React, { SyntheticEvent, useEffect, useState } from "react";
 import axios from "axios";
 import { ActionTypeList } from "../component/type.list";
+import { io, Socket } from "socket.io-client";
 
 export default function ActionPage() {
-  const [creditA, setCreditA] = React.useState(0);
-  const [creditB, setCreditB] = React.useState(0);
-  const [creditC, setCreditC] = React.useState(0);
+  const [credits, setCredits] = React.useState([0, 0, 0]);
   const [type, setType] = React.useState('');
   const [actions, setActions] = useState([]);
 
@@ -15,9 +14,7 @@ export default function ActionPage() {
     axios.get("/user/64888f96313b0d1f7ff2015b")
       .then((res) => res.data)
       .then((user) => {
-        setCreditA(user.credits.A)
-        setCreditB(user.credits.B)
-        setCreditC(user.credits.C)
+        setCredits([user.credits.A, user.credits.B, user.credits.C])
         return user;
       })
       .then((user) => {
@@ -43,6 +40,28 @@ export default function ActionPage() {
       });
   }
 
+  const [socket, setSocket] = useState<Socket| null>( null);
+
+  useEffect(() => {
+    const newSocket = io();
+
+    newSocket.on("actionDeleted", () => {
+      axios.get("/action/64888f96313b0d1f7ff2015b")
+        .then((response) => {
+          setActions(response.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    });
+
+    setSocket(newSocket);
+
+    return () => {
+      newSocket.disconnect();
+    };
+  }, []);
+
   return (
     <Grid container spacing={ 2 } sx={ {height: '100%'} }>
       <Grid item xs={ 12 } sm={ 2 }>
@@ -52,9 +71,9 @@ export default function ActionPage() {
             sx={ {display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px'} }>
         <div style={ {fontSize: '30px'} }>Your credits :</div>
         <div style={ {display: 'flex', flexDirection: 'row', alignItems: 'center'} }>
-          <div style={ {margin: '5px'} }>A : { creditA }</div>
-          <div style={ {margin: '5px'} }>B : { creditB }</div>
-          <div style={ {margin: '5px'} }>C : { creditC }</div>
+          <div style={ {margin: '5px'} }>A : { credits[0] }</div>
+          <div style={ {margin: '5px'} }>B : { credits[1] }</div>
+          <div style={ {margin: '5px'} }>C : { credits[2] }</div>
         </div>
         {actions.length > 0 ? (
           <ActionTypeList actions={actions} />
