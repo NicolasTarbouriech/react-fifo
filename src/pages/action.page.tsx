@@ -1,9 +1,13 @@
-import { Box, Button, Grid, TextField } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import IconMenu from "../component/sideBar.component";
 import React, { SyntheticEvent, useEffect, useState } from "react";
 import axios from "axios";
 import { ActionTypeList } from "../component/type.list";
 import { io, Socket } from "socket.io-client";
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
 
 export default function ActionPage() {
   const [credits, setCredits] = React.useState([0, 0, 0]);
@@ -25,12 +29,14 @@ export default function ActionPage() {
     })
   }, []);
 
-  async function handleSubmit(e: SyntheticEvent) {
-    e.preventDefault();
+  const handleSelectChange = (event: any) => {
+    setType(event.target.value);
+  };
+
+  async function handleAddAction(e: SyntheticEvent) {
     const data = {
       type: type
     };
-
     axios.post("/user/64888f96313b0d1f7ff2015b/actions", data)
       .then(response => {
         setActions(response.data)
@@ -47,7 +53,7 @@ export default function ActionPage() {
 
     newSocket.on("actionDeleted", () => {
       axios.get("/action/64888f96313b0d1f7ff2015b")
-        .then((response) => {
+        .then(async (response) => {
           setActions(response.data);
         })
         .catch((error) => {
@@ -80,26 +86,23 @@ export default function ActionPage() {
         ) : (
           <p>There is no action in the queue</p>
         )}
-        <Button sx={ {marginTop: '20px'} } variant={ "contained" }>Add an action to the queue</Button>
-        <Box component="form" onSubmit={ handleSubmit }>
-          <TextField
-            type="type"
+        <FormControl sx={{ m: 1, width: 300, mt: 3 }}>
+          <InputLabel id="demo-simple-select-label">Action</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={type}
             label="Type"
-            value={ type }
-            onChange={ (e) => setType(e.target.value) }
-            margin="normal"
-            required
-            fullWidth
-          />
-          <Button
-            type="submit"
-            disabled={ !type }
-            fullWidth
-            variant="contained"
+            onChange={handleSelectChange}
           >
-            Add action
-          </Button>
-        </Box>
+            <MenuItem value={'A'}>A</MenuItem>
+            <MenuItem value={'B'}>B</MenuItem>
+            <MenuItem value={'C'}>C</MenuItem>
+          </Select>
+        </FormControl>
+        <Button sx={ {marginTop: '20px'} } variant={ "contained" } onClick={handleAddAction}>
+          Add an action to the queue
+        </Button>
       </Grid>
     </Grid>
   )
