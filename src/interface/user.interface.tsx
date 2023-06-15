@@ -8,4 +8,5 @@ export interface IUser extends Document {
   queue: IAction[];
   createdAt?: Date;
   updatedAt?: Date;
+  lastActionDeletedAt?: Date;
 }
