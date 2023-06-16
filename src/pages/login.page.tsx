@@ -1,24 +1,49 @@
 import { SyntheticEvent, useState } from 'react';
 import {
+  Alert,
   Box,
   Button,
   Container, Grid,
   TextField,
   Typography,
 } from '@mui/material';
-import { getJwt } from '../service/jwt.service';
 import IconMenu from "../component/sideBar.component";
+import { useAuth } from "../hook/auth.hook";
+
+const sx = {
+  box: {
+    marginTop: 8,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  logo: {
+    m: 1,
+    bgcolor: 'secondary.main',
+  },
+  form: {
+    mt: 1,
+  },
+  buttonSubmit: {
+    mt: 3,
+    mb: 2,
+  },
+};
 
 export default function LoginPage() {
-  const jwt = getJwt();
   const [email, setEmail] = useState('');
-  const [token, setToken] = useState<string | null>(jwt);
+  const [error, setError] = useState<string | null>(null);
+  const auth = useAuth();
+
 
   async function handleSubmit(e: SyntheticEvent) {
     e.preventDefault();
-    const {accessToken} = {accessToken: 'test'};
-    setToken(accessToken);
-    sessionStorage.setItem('jwt', accessToken);
+    auth
+      ?.onLogin(email)
+      .then()
+      .catch((err) => {
+        setError(err.message);
+      });
   }
 
   return (
@@ -33,21 +58,24 @@ export default function LoginPage() {
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
+            {error && <Alert severity="error">{error}</Alert>}
             <Box component="form" onSubmit={ handleSubmit } noValidate>
               <TextField
                 type="email"
                 label="Email"
-                value={ email }
-                onChange={ (e) => setEmail(e.target.value) }
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 margin="normal"
                 required
                 fullWidth
+                autoFocus={true}
               />
               <Button
                 type="submit"
-                disabled={ !email }
+                disabled={!email}
                 fullWidth
                 variant="contained"
+                sx={sx.buttonSubmit}
               >
                 Sign in
               </Button>

@@ -6,10 +6,8 @@ export function getJwt() {
 
 export function setJwt(jwt: string) {
   sessionStorage.setItem(JWT_NAME, jwt);
-  //OpenAPI.TOKEN = jwt;
 }
 
 export function removeJwt() {
   sessionStorage.removeItem(JWT_NAME);
-  //delete OpenAPI.TOKEN;
 }
