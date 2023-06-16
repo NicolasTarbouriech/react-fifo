@@ -10,8 +10,19 @@ import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import CreateIcon from '@mui/icons-material/Create';
 import HomeIcon from '@mui/icons-material/Home';
 import { Link } from "react-router-dom";
+import LogoutIcon from '@mui/icons-material/Logout';
+import { useAuth } from "../hook/auth.hook";
+
+export function isUserLoggedIn() {
+  const jwt = sessionStorage.getItem('jwt');
+  return !!jwt;
+}
 
 export default function IconMenu() {
+  const getJwt = isUserLoggedIn();
+
+  const auth = useAuth();
+
   return (
     <Paper sx={ {width: '100%', height: '100%', margin: 0, padding: 0} }>
       <MenuList sx={ {height: '100%', margin: 0, padding: 0} }>
@@ -31,23 +42,36 @@ export default function IconMenu() {
             <ListItemText>Create user</ListItemText>
           </MenuItem>
         </Link>
-        <Link style={ {textDecoration: 'unset', color: 'unset'} } to={ '/action' }>
-          <MenuItem>
-            <ListItemIcon>
-              <CreateIcon fontSize="small"/>
-            </ListItemIcon>
-            <ListItemText>Queue</ListItemText>
-          </MenuItem>
-        </Link>
+        {getJwt && (
+          <Link style={{ textDecoration: 'unset', color: 'unset' }} to="/action">
+            <MenuItem>
+              <ListItemIcon>
+                <CreateIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText>Queue</ListItemText>
+            </MenuItem>
+          </Link>
+        )}
         <Divider/>
-        <Link style={ {textDecoration: 'unset', color: 'unset'} } to={ '/login' }>
-          <MenuItem>
-            <ListItemIcon>
-              <LoginIcon fontSize="small"/>
-            </ListItemIcon>
-            <ListItemText>Login</ListItemText>
-          </MenuItem>
-        </Link>
+        {getJwt ? (
+          <Link style={{ textDecoration: 'unset', color: 'unset' }} onClick={auth?.onLogout}  to="/">
+            <MenuItem>
+              <ListItemIcon>
+                <LogoutIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText>Logout</ListItemText>
+            </MenuItem>
+          </Link>
+        ) : (
+          <Link style={{ textDecoration: 'unset', color: 'unset' }} to="/login">
+            <MenuItem>
+              <ListItemIcon>
+                <LoginIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText>Login</ListItemText>
+            </MenuItem>
+          </Link>
+        )}
       </MenuList>
     </Paper>
   );

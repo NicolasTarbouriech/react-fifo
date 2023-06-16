@@ -14,9 +14,9 @@ function updateJwt(token: string | null) {
 }
 
 export default function AuthProvider({children}: PropsChildren) {
-  const jwt = getJwt();
-  updateJwt(jwt);
-  const [token, setToken] = useState<string | null>(jwt);
+  const jsonToken = getJwt();
+  updateJwt(jsonToken);
+  const [token, setToken] = useState<string | null>(jsonToken);
 
   useEffect(() => {
     updateJwt(token);
@@ -30,20 +30,29 @@ export default function AuthProvider({children}: PropsChildren) {
       }
     )
       .then(response => {
-        setToken(response.data.accessToken)
-      })
+        setToken(response.data.accessToken);
 
-    if (typeof token === "string") {
-      sessionStorage.setItem('jwt', token);
-      navigate('/action')
-    } else {
-      navigate('/login');
-    }
+        if (typeof token === 'string') {
+          sessionStorage.setItem('jwt', token);
+          // decode token
+          const payload = JSON.parse(atob(token.split('.')[1]));
+          if (payload && typeof payload === 'object' && 'user' in payload) {
+            const userId = payload.user._id;
+            sessionStorage.setItem('userId', userId)
+            navigate('/action');
+          } else {
+            navigate('/login');
+          }
+        } else {
+          navigate('/login');
+        }
+      })
   };
 
   const handleLogout = () => {
     setToken(null);
     sessionStorage.removeItem('jwt');
+    navigate('/login');
   };
 
   const value: ContextValue = {

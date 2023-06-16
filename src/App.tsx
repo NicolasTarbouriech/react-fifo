@@ -7,6 +7,7 @@ import LandingPage from "./pages/landing.page";
 import ActionPage from "./pages/action.page";
 import ProtectedLayout from "./layout/protected.layout";
 import AuthProvider from "./provider/Auth.provider";
+import CreateUserPage from "./pages/createUser.page";
 
 const darkTheme = createTheme({
   palette: {
@@ -22,6 +23,7 @@ function App() {
         <Routes>
           <Route path="/login" element={ <Login/> }/>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/create-user" element={<CreateUserPage />} />
           <Route element={<ProtectedLayout />}>
             <Route path="/action" element={<ActionPage />} />
           </Route>

@@ -11,22 +11,23 @@ import MenuItem from '@mui/material/MenuItem';
 
 export default function ActionPage() {
   const [credits, setCredits] = React.useState([0, 0, 0]);
-  const [type, setType] = React.useState(null);
+  const [type, setType] = React.useState('');
   const [actions, setActions] = useState([]);
 
+  const userId = sessionStorage.getItem('userId');
+
   useEffect(() => {
-    axios.get("/user/648b2a6f093024a2aad39925")
+    axios.get("/user/" + userId)
       .then((res) => {
         setCredits([res.data.credits.A, res.data.credits.B, res.data.credits.C])
-        return res.data;
       })
-      .then((user) => {
-        axios.get("/action/" + user._id)
+      .then(() => {
+        axios.get("/action/" + userId)
           .then((response) => {
             setActions(response.data);
           })
       })
-  }, []);
+  }, [userId]);
 
   const handleSelectChange = (event: any) => {
     setType(event.target.value);
@@ -36,9 +37,9 @@ export default function ActionPage() {
     const data = {
       type: type
     };
-    axios.post("/user/648b2a6f093024a2aad39925/actions", data)
+    axios.post("/user/" + userId + "/actions", data)
       .then(() => {
-        axios.get("/action/648b2a6f093024a2aad39925")
+        axios.get("/action/" + userId)
           .then(async (response) => {
             setActions(response.data);
           })
@@ -57,10 +58,10 @@ export default function ActionPage() {
     const newSocket = io();
 
     newSocket.on("actionDeleted", () => {
-      axios.get("/action/648b2a6f093024a2aad39925")
+      axios.get("/action/" + userId)
         .then(async (response) => {
           setActions(response.data);
-          axios.get("/user/648b2a6f093024a2aad39925")
+          axios.get("/user/" + userId)
             .then((res) => {
               setCredits([res.data.credits.A, res.data.credits.B, res.data.credits.C])
             })
@@ -75,7 +76,7 @@ export default function ActionPage() {
     return () => {
       newSocket.disconnect();
     };
-  }, []);
+  }, [userId]);
 
   return (
     <Grid container spacing={ 2 } sx={ {height: '100%'} }>
