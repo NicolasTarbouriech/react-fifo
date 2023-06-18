@@ -8,7 +8,7 @@ import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import { ActionTypeList } from "../component/actionType.component";
-import { ActionData, IActionType } from "../interface/action.interface";
+import { IActionType } from "../interface/action.interface";
 
 export default function ActionPage() {
   const [credits, setCredits] = React.useState<number[]>([0, 0, 0]);
