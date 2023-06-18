@@ -33,7 +33,7 @@ export default function SignUpPage() {
         <Container className="login" component="main" maxWidth="xs">
           <Box sx={ {display: 'flex', flexDirection: 'column', alignItems: 'center'} }>
             <Typography component="h1" variant="h5">
-              Create user
+              Sign up
             </Typography>
             { error && <Alert severity="error">{ error }</Alert> }
             <Box component="form" onSubmit={ handleSubmit } noValidate>

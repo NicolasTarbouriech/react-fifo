@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Divider from '@mui/material/Divider';
 import Paper from '@mui/material/Paper';
 import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
@@ -27,7 +26,7 @@ export default function SideBarComponent() {
       path: '/'
     },
     {
-      label: 'Create user',
+      label: 'Sign up',
       icon: <PeopleAltIcon fontSize="small" />,
       path: '/sign-up'
     },
@@ -49,7 +48,7 @@ export default function SideBarComponent() {
         {
           label: 'Login',
           icon: <LoginIcon fontSize="small" />,
-          path: '/action',
+          path: '/login',
         }
       ])
   ];
