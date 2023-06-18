@@ -14,7 +14,6 @@ export default function ActionPage() {
   const [credits, setCredits] = React.useState<number[]>([0, 0, 0]);
   const [type, setType] = React.useState<string>('');
   const [actions, setActions] = useState<IActionType[]>([]);
-
   const userId = sessionStorage.getItem('userId');
 
   useEffect(() => {
@@ -23,15 +22,12 @@ export default function ActionPage() {
         axios.get("/user/" + userId),
         axios.get("/action/" + userId)
       ]);
-
       const {credits: {A, B, C}} = responseCredits.data;
       setCredits([A, B, C]);
       setActions(responseActions.data);
     };
-
     fetchUserAndActions();
   }, [userId]);
-
 
   const handleSelectChange = (event: any) => {
     setType(event.target.value);
@@ -60,7 +56,6 @@ export default function ActionPage() {
 
   useEffect(() => {
     const newSocket = io();
-
     newSocket.on("actionDeleted", () => {
       Promise.all([
         axios.get("/action/" + userId),
@@ -78,7 +73,6 @@ export default function ActionPage() {
           console.error(error);
         });
     });
-
     setSocket(newSocket);
 
     return () => {
