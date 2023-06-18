@@ -16,3 +16,9 @@ export interface IAction {
   updatedAt?: Date;
   owner: IUser;
 }
+
+export interface IActionType {
+  type: string,
+  createdAt: string
+}
+

@@ -1,4 +1,4 @@
-import { SyntheticEvent, useState } from 'react';
+import { SyntheticEvent, useContext, useState } from 'react';
 import {
   Alert,
   Box,
@@ -7,8 +7,8 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import IconMenu from "../component/sideBar.component";
-import { useAuth } from "../hook/auth.hook";
+import SideBarComponent from "../component/sideBar.component";
+import { AuthContext, ContextValue } from "../context/auth.context";
 
 const sx = {
   box: {
@@ -33,13 +33,13 @@ const sx = {
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [error, setError] = useState<string | null>(null);
-  const auth = useAuth();
-
+  const auth: ContextValue | null = useContext(AuthContext);
 
   async function handleSubmit(e: SyntheticEvent) {
     e.preventDefault();
-    auth
-      ?.onLogin(email)
+    // ! to say onLogin exist
+    auth!
+      .onLogin(email)
       .then()
       .catch((err) => {
         setError(err.message);
@@ -49,7 +49,7 @@ export default function LoginPage() {
   return (
     <Grid container spacing={ 2 } sx={ {height: '100%', width: '100%'} }>
       <Grid item xs={ 12 } sm={ 2 }>
-        <IconMenu/>
+        <SideBarComponent/>
       </Grid>
       <Grid item xs={ 12 } sm={ 10 }
             sx={ {display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px'} }>

@@ -1,5 +1,5 @@
 import { Alert, Box, Button, Container, Grid, TextField, Typography } from "@mui/material";
-import IconMenu from "../component/sideBar.component";
+import SideBarComponent from "../component/sideBar.component";
 import React, { SyntheticEvent, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -26,7 +26,7 @@ export default function CreateUserPage() {
   return (
     <Grid container spacing={ 2 } sx={ {height: '100%'} }>
       <Grid item xs={ 12 } sm={ 2 }>
-        <IconMenu/>
+        <SideBarComponent/>
       </Grid>
       <Grid item xs={ 12 } sm={ 10 }
             sx={ {display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px'} }>

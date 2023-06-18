@@ -1,33 +1,37 @@
 import { Button, Grid } from "@mui/material";
-import IconMenu from "../component/sideBar.component";
+import SideBarComponent from "../component/sideBar.component";
 import React, { SyntheticEvent, useEffect, useState } from "react";
 import axios from "axios";
-import { ActionTypeList } from "../component/type.list";
 import { io, Socket } from "socket.io-client";
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
+import { ActionTypeList } from "../component/actionType.component";
+import { ActionData, IActionType } from "../interface/action.interface";
 
 export default function ActionPage() {
-  const [credits, setCredits] = React.useState([0, 0, 0]);
-  const [type, setType] = React.useState('');
-  const [actions, setActions] = useState([]);
+  const [credits, setCredits] = React.useState<number[]>([0, 0, 0]);
+  const [type, setType] = React.useState<string>('');
+  const [actions, setActions] = useState<IActionType[]>([]);
 
   const userId = sessionStorage.getItem('userId');
 
   useEffect(() => {
-    axios.get("/user/" + userId)
-      .then((res) => {
-        setCredits([res.data.credits.A, res.data.credits.B, res.data.credits.C])
-      })
-      .then(() => {
+    const fetchUserAndActions = async () => {
+      const [responseCredits, responseActions] = await Promise.all([
+        axios.get("/user/" + userId),
         axios.get("/action/" + userId)
-          .then((response) => {
-            setActions(response.data);
-          })
-      })
+      ]);
+
+      const {credits: {A, B, C}} = responseCredits.data;
+      setCredits([A, B, C]);
+      setActions(responseActions.data);
+    };
+
+    fetchUserAndActions();
   }, [userId]);
+
 
   const handleSelectChange = (event: any) => {
     setType(event.target.value);
@@ -58,13 +62,17 @@ export default function ActionPage() {
     const newSocket = io();
 
     newSocket.on("actionDeleted", () => {
-      axios.get("/action/" + userId)
-        .then(async (response) => {
-          setActions(response.data);
-          axios.get("/user/" + userId)
-            .then((res) => {
-              setCredits([res.data.credits.A, res.data.credits.B, res.data.credits.C])
-            })
+      Promise.all([
+        axios.get("/action/" + userId),
+        axios.get("/user/" + userId)
+      ])
+        .then(([responseActions, responseCredits]) => {
+          setActions(responseActions.data);
+          setCredits([
+            responseCredits.data.credits.A,
+            responseCredits.data.credits.B,
+            responseCredits.data.credits.C
+          ]);
         })
         .catch((error) => {
           console.error(error);
@@ -81,7 +89,7 @@ export default function ActionPage() {
   return (
     <Grid container spacing={ 2 } sx={ {height: '100%'} }>
       <Grid item xs={ 12 } sm={ 2 }>
-        <IconMenu/>
+        <SideBarComponent/>
       </Grid>
       <Grid item xs={ 12 } sm={ 10 }
             sx={ {display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px'} }>

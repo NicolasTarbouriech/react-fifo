@@ -1,10 +1,8 @@
-import { IAction } from "./action.interface";
+import { ActionTypeEnum, IAction } from "./action.interface";
 
 export interface IUser extends Document {
   email: string;
-  credits: {
-    [key: string]: number;
-  };
+  credits: Record<ActionTypeEnum, number>;
   queue: IAction[];
   createdAt?: Date;
   updatedAt?: Date;

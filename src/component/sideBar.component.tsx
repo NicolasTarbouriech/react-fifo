@@ -11,67 +11,68 @@ import CreateIcon from '@mui/icons-material/Create';
 import HomeIcon from '@mui/icons-material/Home';
 import { Link } from "react-router-dom";
 import LogoutIcon from '@mui/icons-material/Logout';
-import { useAuth } from "../hook/auth.hook";
+import { isUserLogged } from "../service/jwt.service";
+import { useContext } from "react";
+import { AuthContext, ContextValue } from "../context/auth.context";
 
-export function isUserLoggedIn() {
-  const jwt = sessionStorage.getItem('jwt');
-  return !!jwt;
-}
+export default function SideBarComponent() {
+  const auth: ContextValue | null = useContext(AuthContext);
 
-export default function IconMenu() {
-  const getJwt = isUserLoggedIn();
+  const userLogged = isUserLogged();
 
-  const auth = useAuth();
+  const menuItems = [
+    {
+      label: 'Home',
+      icon: <HomeIcon fontSize="small" />,
+      path: '/'
+    },
+    {
+      label: 'Create user',
+      icon: <PeopleAltIcon fontSize="small" />,
+      path: '/create-user'
+    },
+    ...(userLogged
+      ? [
+        {
+          label: 'Queue',
+          icon: <CreateIcon fontSize="small" />,
+          path: '/action'
+        },
+        {
+          label: 'Logout',
+          icon: <LogoutIcon fontSize="small" />,
+          path: '/',
+          onClick: auth.onLogout
+        }
+      ]
+      : [
+        {
+          label: 'Login',
+          icon: <LoginIcon fontSize="small" />,
+          path: '/action',
+        }
+      ])
+  ];
 
   return (
-    <Paper sx={ {width: '100%', height: '100%', margin: 0, padding: 0} }>
-      <MenuList sx={ {height: '100%', margin: 0, padding: 0} }>
-        <Link style={ {textDecoration: 'unset', color: 'unset'} } to={ '/' }>
-          <MenuItem>
-            <ListItemIcon>
-              <HomeIcon fontSize="small"/>
-            </ListItemIcon>
-            <ListItemText>Home</ListItemText>
-          </MenuItem>
-        </Link>
-        <Link style={ {textDecoration: 'unset', color: 'unset'} } to={ '/create-user' }>
-          <MenuItem>
-            <ListItemIcon>
-              <PeopleAltIcon fontSize="small"/>
-            </ListItemIcon>
-            <ListItemText>Create user</ListItemText>
-          </MenuItem>
-        </Link>
-        {getJwt && (
-          <Link style={{ textDecoration: 'unset', color: 'unset' }} to="/action">
-            <MenuItem>
-              <ListItemIcon>
-                <CreateIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>Queue</ListItemText>
-            </MenuItem>
-          </Link>
-        )}
-        <Divider/>
-        {getJwt ? (
-          <Link style={{ textDecoration: 'unset', color: 'unset' }} onClick={auth?.onLogout}  to="/">
-            <MenuItem>
-              <ListItemIcon>
-                <LogoutIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>Logout</ListItemText>
-            </MenuItem>
-          </Link>
-        ) : (
-          <Link style={{ textDecoration: 'unset', color: 'unset' }} to="/login">
-            <MenuItem>
-              <ListItemIcon>
-                <LoginIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>Login</ListItemText>
-            </MenuItem>
-          </Link>
-        )}
+    <Paper sx={{ width: '100%', height: '100%', margin: 0, padding: 0 }}>
+      <MenuList sx={{ height: '100%', margin: 0, padding: 0 }}>
+        {menuItems.map((item, index) => {
+          const { label, icon, path, onClick } = item;
+          return (
+            <Link
+              key={index}
+              style={{ textDecoration: 'unset', color: 'unset' }}
+              to={path}
+              onClick={onClick}
+            >
+              <MenuItem>
+                <ListItemIcon>{icon}</ListItemIcon>
+                <ListItemText>{label}</ListItemText>
+              </MenuItem>
+            </Link>
+          );
+        })}
       </MenuList>
     </Paper>
   );

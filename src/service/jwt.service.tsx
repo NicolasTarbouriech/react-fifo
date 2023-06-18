@@ -11,3 +11,8 @@ export function setJwt(jwt: string) {
 export function removeJwt() {
   sessionStorage.removeItem(JWT_NAME);
 }
+
+export function isUserLogged() {
+  const jwt = sessionStorage.getItem('jwt');
+  return !!jwt;
+}

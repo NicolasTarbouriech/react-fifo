@@ -7,4 +7,9 @@ export interface ContextValue {
   onLogout: () => void;
 }
 
-export const AuthContext = createContext<ContextValue | null>(null);
+export const AuthContext = createContext<ContextValue>({
+  token: null,
+  setToken: () => {},
+  onLogin: async () => {},
+  onLogout: () => {}
+});
