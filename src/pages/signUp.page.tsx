@@ -4,14 +4,14 @@ import React, { SyntheticEvent, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export default function CreateUserPage() {
+export default function SignUpPage() {
   const [email, setEmail] = useState('');
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   async function handleSubmit(e: SyntheticEvent) {
     e.preventDefault();
-    axios.post('/user/create', {
+    axios.post('/auth/sign-up', {
         email: email
       }
     )

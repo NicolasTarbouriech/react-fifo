@@ -29,7 +29,7 @@ export default function SideBarComponent() {
     {
       label: 'Create user',
       icon: <PeopleAltIcon fontSize="small" />,
-      path: '/create-user'
+      path: '/sign-up'
     },
     ...(userLogged
       ? [
