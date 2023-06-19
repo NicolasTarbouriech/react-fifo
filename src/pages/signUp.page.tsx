@@ -1,27 +1,11 @@
 import { Alert, Box, Button, Container, Grid, TextField, Typography } from "@mui/material";
 import SideBarComponent from "../component/sideBar.component";
-import React, { SyntheticEvent, useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useAuthManagerHook } from "../hook/useAuthManager.hook";
 
 export default function SignUpPage() {
   const [email, setEmail] = useState('');
-  const [error, setError] = useState<string | null>(null);
-  const navigate = useNavigate();
-
-  async function handleSubmit(e: SyntheticEvent) {
-    e.preventDefault();
-    axios.post('/auth/sign-up', {
-        email: email
-      }
-    )
-      .then(() => {
-        navigate('/login');
-      })
-      .catch((e) => {
-        setError(e);
-      })
-  }
+  const { handleSubmit, state } = useAuthManagerHook();
 
   return (
     <Grid container spacing={ 2 } sx={ {height: '100%'} }>
@@ -35,8 +19,11 @@ export default function SignUpPage() {
             <Typography component="h1" variant="h5">
               Sign up
             </Typography>
-            { error && <Alert severity="error">{ error }</Alert> }
-            <Box component="form" onSubmit={ handleSubmit } noValidate>
+            { state && <Alert severity="error">{ state }</Alert> }
+            <Box component="form" onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit(email)
+            }} noValidate>
               <TextField
                 type="email"
                 label="Email"
