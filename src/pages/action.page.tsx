@@ -1,20 +1,19 @@
 import { Button, Grid } from "@mui/material";
 import SideBarComponent from "../component/sideBar.component";
-import React, { SyntheticEvent, useEffect, useState } from "react";
+import React, { SyntheticEvent, useEffect } from "react";
 import axios from "axios";
-import { io, Socket } from "socket.io-client";
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import { ActionTypeList } from "../component/actionType.component";
-import { IActionType } from "../interface/action.interface";
+import { useSocketActionHook } from "../hook/useSocketAction.hook";
 
 export default function ActionPage() {
-  const [credits, setCredits] = React.useState<number[]>([0, 0, 0]);
   const [type, setType] = React.useState<string>('');
-  const [actions, setActions] = useState<IActionType[]>([]);
   const userId = sessionStorage.getItem('userId');
+  const { useSocketAction } = useSocketActionHook();
+  const { socket, actions, setActions, credits, setCredits } = useSocketAction(userId);
 
   useEffect(() => {
     const fetchUserAndActions = async () => {
@@ -51,34 +50,6 @@ export default function ActionPage() {
         console.error(error);
       });
   }
-
-  const [socket, setSocket] = useState<Socket | null>(null);
-
-  useEffect(() => {
-    const newSocket = io();
-    newSocket.on("actionDeleted", () => {
-      Promise.all([
-        axios.get("/action/" + userId),
-        axios.get("/user/" + userId)
-      ])
-        .then(([responseActions, responseCredits]) => {
-          setActions(responseActions.data);
-          setCredits([
-            responseCredits.data.credits.A,
-            responseCredits.data.credits.B,
-            responseCredits.data.credits.C
-          ]);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    });
-    setSocket(newSocket);
-
-    return () => {
-      newSocket.disconnect();
-    };
-  }, [userId]);
 
   return (
     <Grid container spacing={ 2 } sx={ {height: '100%'} }>
