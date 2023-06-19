@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import axios from "axios";
-import { IActionType } from "../interface/action.interface";
+import { IAction } from "../interface/action.interface";
+import { IUser } from "../interface/user.interface";
 
 export function useSocketActionHook() {
   const useSocketAction = (userId: string | null) => {
     const [socket, setSocket] = useState<Socket | null>(null);
-    const [actions, setActions] = useState<IActionType[]>([]);
+    const [actions, setActions] = useState<IAction[]>([]);
     const [credits, setCredits] = useState<number[]>([0, 0, 0]);
 
     useEffect(() => {
@@ -24,8 +25,8 @@ export function useSocketActionHook() {
         if (socket) {
           socket.on("actionDeleted", () => {
             Promise.all([
-              axios.get("/action/" + userId),
-              axios.get("/user/" + userId)
+              axios.get<IAction[]>("/action/" + userId),
+              axios.get<IUser>("/user/" + userId)
             ])
               .then(([responseActions, responseCredits]) => {
                 setActions(responseActions.data);

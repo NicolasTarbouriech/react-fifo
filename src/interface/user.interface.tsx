@@ -1,6 +1,6 @@
 import { ActionTypeEnum, IAction } from "./action.interface";
 
-export interface IUser extends Document {
+export interface IUser {
   email: string;
   credits: Record<ActionTypeEnum, number>;
   queue: IAction[];

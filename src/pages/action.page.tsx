@@ -8,6 +8,8 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import { ActionTypeList } from "../component/actionType.component";
 import { useSocketActionHook } from "../hook/useSocketAction.hook";
+import { IUser } from "../interface/user.interface";
+import { IAction } from "../interface/action.interface";
 
 export default function ActionPage() {
   const [type, setType] = React.useState<string>('');
@@ -18,8 +20,8 @@ export default function ActionPage() {
   useEffect(() => {
     const fetchUserAndActions = async () => {
       const [responseCredits, responseActions] = await Promise.all([
-        axios.get("/user/" + userId),
-        axios.get("/action/" + userId)
+        axios.get<IUser>("/user/" + userId),
+        axios.get<IAction[]>("/action/" + userId)
       ]);
       const {credits: {A, B, C}} = responseCredits.data;
       setCredits([A, B, C]);
@@ -38,7 +40,7 @@ export default function ActionPage() {
     };
     axios.post("/user/" + userId + "/actions", data)
       .then(() => {
-        axios.get("/action/" + userId)
+        axios.get<IAction[]>("/action/" + userId)
           .then(async (response) => {
             setActions(response.data);
           })

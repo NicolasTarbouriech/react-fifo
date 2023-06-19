@@ -1,5 +1,3 @@
-import { IUser } from "./user.interface";
-
 export enum ActionTypeEnum {
   A = "A",
   B = "B",
@@ -11,14 +9,9 @@ export type ActionTypes = (typeof actionTypeEnum)[number];
 
 export interface IAction {
   type: ActionTypes;
-  credits: Number;
+  credits: number;
   createdAt?: Date;
   updatedAt?: Date;
-  owner: IUser;
-}
-
-export interface IActionType {
-  type: string,
-  createdAt: string
+  owner: string;
 }
 

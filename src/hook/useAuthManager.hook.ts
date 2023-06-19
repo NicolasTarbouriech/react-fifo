@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { IUser } from "../interface/user.interface";
 
 export function useAuthManagerHook() {
   const navigate = useNavigate();
@@ -8,7 +9,7 @@ export function useAuthManagerHook() {
 
   const handleSubmit = async (email: string) => {
     try {
-      await axios.post('/auth/sign-up', {
+      await axios.post<IUser>('/auth/sign-up', {
           email
         }
       )

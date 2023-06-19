@@ -8,7 +8,8 @@ import {
   Typography,
 } from '@mui/material';
 import SideBarComponent from "../component/sideBar.component";
-import { AuthContext, ContextValue } from "../context/auth.context";
+import { AuthContext } from "../context/auth.context";
+import { ContextValue } from "../interface/authContext.interface";
 
 const sx = {
   box: {

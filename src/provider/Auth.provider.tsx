@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { AuthContext, ContextValue } from '../context/auth.context';
+import { AuthContext } from '../context/auth.context';
 import { useNavigate } from 'react-router-dom';
 import { getJwt, removeJwt, setJwt } from '../service/jwt.service';
 import axios from 'axios';
 import { PropsChildren } from '../type/props.type';
+import { ContextValue, IAuth } from "../interface/authContext.interface";
 
 function updateJwt(token: string | null) {
   if (token) {
@@ -24,7 +25,7 @@ export default function AuthProvider({children}: PropsChildren) {
 
   const navigate = useNavigate();
   const handleLogin = async (email: string) => {
-    axios.post('/auth/sign-in',
+    axios.post<IAuth>('/auth/sign-in',
       {
         email: email
       }
@@ -36,10 +37,10 @@ export default function AuthProvider({children}: PropsChildren) {
           sessionStorage.setItem('jwt', token);
           // decode token
           const payload = JSON.parse(atob(token.split('.')[1]));
-          if (payload && typeof payload === 'object' && 'user' in payload) {
+          if (payload && 'user' in payload) {
             const userId = payload.user._id;
             sessionStorage.setItem('userId', userId)
-            navigate('/action');
+            navigate('/action')
           } else {
             navigate('/login');
           }

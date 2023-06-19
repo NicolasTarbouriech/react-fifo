@@ -1,11 +1,5 @@
-import { createContext, Dispatch, SetStateAction } from "react";
-
-export interface ContextValue {
-  token: string | null;
-  setToken: Dispatch<SetStateAction<string | null>>;
-  onLogin: (email: string) => Promise<void>;
-  onLogout: () => void;
-}
+import { createContext } from "react";
+import { ContextValue } from "../interface/authContext.interface";
 
 export const AuthContext = createContext<ContextValue>({
   token: null,

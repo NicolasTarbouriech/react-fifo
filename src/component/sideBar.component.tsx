@@ -12,7 +12,8 @@ import { Link } from "react-router-dom";
 import LogoutIcon from '@mui/icons-material/Logout';
 import { isUserLogged } from "../service/jwt.service";
 import { useContext } from "react";
-import { AuthContext, ContextValue } from "../context/auth.context";
+import { AuthContext } from "../context/auth.context";
+import { ContextValue } from "../interface/authContext.interface";
 
 export default function SideBarComponent() {
   const auth: ContextValue | null = useContext(AuthContext);
@@ -48,7 +49,7 @@ export default function SideBarComponent() {
         {
           label: 'Login',
           icon: <LoginIcon fontSize="small" />,
-          path: '/login',
+          path: '/',
         }
       ])
   ];
