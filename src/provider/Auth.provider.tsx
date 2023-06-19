@@ -5,45 +5,40 @@ import { getJwt, removeJwt, setJwt } from '../service/jwt.service';
 import axios from 'axios';
 import { PropsChildren } from '../type/props.type';
 import { ContextValue, IAuth } from "../interface/authContext.interface";
-
-function updateJwt(token: string | null) {
-  if (token) {
-    setJwt(token);
-  } else {
-    removeJwt();
-  }
-}
+import { removeUser, setUser } from "../service/user.service";
 
 export default function AuthProvider({children}: PropsChildren) {
   const jsonToken = getJwt();
-  updateJwt(jsonToken);
   const [token, setToken] = useState<string | null>(jsonToken);
+  const navigate = useNavigate();
+
+  const updateJwt = (token: string | null) => {
+    if (token) {
+      setToken(token);
+      setJwt(token);
+    } else {
+      removeJwt();
+    }
+  }
 
   useEffect(() => {
-    updateJwt(token);
-  }, [token]);
+    updateJwt(jsonToken);
+  }, [jsonToken]);
 
-  const navigate = useNavigate();
   const handleLogin = async (email: string) => {
     axios.post<IAuth>('/auth/sign-in',
       {
-        email: email
+        email
       }
     )
       .then(response => {
-        setToken(response.data.accessToken);
-
-        if (typeof token === 'string') {
-          sessionStorage.setItem('jwt', token);
-          // decode token
-          const payload = JSON.parse(atob(token.split('.')[1]));
-          if (payload && 'user' in payload) {
-            const userId = payload.user._id;
-            sessionStorage.setItem('userId', userId)
-            navigate('/action')
-          } else {
-            navigate('/login');
-          }
+        const {accessToken} = response.data;
+        updateJwt(accessToken);
+        const payload = JSON.parse(atob(accessToken.split('.')[1]));
+        if (payload && 'user' in payload) {
+          const userId = payload.user._id;
+          setUser(userId);
+          navigate('/action')
         } else {
           navigate('/login');
         }
@@ -52,7 +47,8 @@ export default function AuthProvider({children}: PropsChildren) {
 
   const handleLogout = () => {
     setToken(null);
-    sessionStorage.removeItem('jwt');
+    removeJwt();
+    removeUser();
     navigate('/login');
   };
 

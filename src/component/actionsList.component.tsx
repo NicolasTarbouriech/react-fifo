@@ -1,7 +1,7 @@
 import { formatDate } from "../util/date.util";
 import { IAction } from "../interface/action.interface";
 
-export function ActionTypeList(props: { actions: IAction[] }) {
+export function ActionsList(props: { actions: IAction[] }) {
   return (
     <ul>
       {props.actions.map((action, index) => (

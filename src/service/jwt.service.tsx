@@ -13,6 +13,6 @@ export function removeJwt() {
 }
 
 export function isUserLogged() {
-  const jwt = sessionStorage.getItem('jwt');
+  const jwt = sessionStorage.getItem(JWT_NAME);
   return !!jwt;
 }

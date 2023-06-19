@@ -1,11 +1,11 @@
 import { Alert, Box, Button, Container, Grid, TextField, Typography } from "@mui/material";
 import SideBarComponent from "../component/sideBar.component";
 import React, { useState } from "react";
-import { useAuthManagerHook } from "../hook/useAuthManager.hook";
+import { useAuthRequest } from "../hook/useAuthManager.hook";
 
 export default function SignUpPage() {
   const [email, setEmail] = useState('');
-  const { handleSubmit, state } = useAuthManagerHook();
+  const { handleSubmit, state } = useAuthRequest();
 
   return (
     <Grid container spacing={ 2 } sx={ {height: '100%'} }>

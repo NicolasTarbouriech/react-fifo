@@ -6,15 +6,15 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import { ActionTypeList } from "../component/actionType.component";
-import { useSocketActionHook } from "../hook/useSocketAction.hook";
 import { IUser } from "../interface/user.interface";
 import { IAction } from "../interface/action.interface";
+import { ActionsList } from "../component/actionsList.component";
+import { useSocketAction } from "../hook/useSocketAction.hook";
+import { getUser } from "../service/user.service";
 
 export default function ActionPage() {
   const [type, setType] = React.useState<string>('');
-  const userId = sessionStorage.getItem('userId');
-  const { useSocketAction } = useSocketActionHook();
+  const userId = getUser();
   const { socket, actions, setActions, credits, setCredits } = useSocketAction(userId);
 
   useEffect(() => {
@@ -67,7 +67,7 @@ export default function ActionPage() {
           <div style={ {margin: '5px'} }>C : { credits[2] }</div>
         </div>
         { actions.length > 0 ? (
-          <ActionTypeList actions={ actions }/>
+          <ActionsList actions={ actions }/>
         ) : (
           <p>There is no action in the queue</p>
         ) }

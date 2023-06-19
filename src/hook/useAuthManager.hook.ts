@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { IUser } from "../interface/user.interface";
 
-export function useAuthManagerHook() {
+export function useAuthRequest() {
   const navigate = useNavigate();
   const [state, setState] = useState<any>(null);
 

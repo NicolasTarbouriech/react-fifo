@@ -14,6 +14,7 @@ import { isUserLogged } from "../service/jwt.service";
 import { useContext } from "react";
 import { AuthContext } from "../context/auth.context";
 import { ContextValue } from "../interface/authContext.interface";
+import { Divider } from "@mui/material";
 
 export default function SideBarComponent() {
   const auth: ContextValue | null = useContext(AuthContext);
@@ -73,6 +74,7 @@ export default function SideBarComponent() {
             </Link>
           );
         })}
+        <Divider/>
       </MenuList>
     </Paper>
   );

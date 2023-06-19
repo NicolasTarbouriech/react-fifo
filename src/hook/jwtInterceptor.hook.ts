@@ -1,12 +1,12 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { removeJwt } from "../service/jwt.service";
+import { getJwt, removeJwt } from "../service/jwt.service";
 
 export function useJwtInterceptor() {
   const navigate = useNavigate();
 
   axios.interceptors.request.use((config) => {
-    const token = sessionStorage.getItem("jwt");
+    const token = getJwt();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
