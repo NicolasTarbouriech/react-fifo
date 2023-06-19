@@ -1,13 +1,14 @@
 import React from 'react';
 import './App.css';
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Login from "./pages/login.page";
 import LandingPage from "./pages/landing.page";
 import ActionPage from "./pages/action.page";
 import ProtectedLayout from "./layout/protected.layout";
 import AuthProvider from "./provider/Auth.provider";
 import SignUpPage from "./pages/signUp.page";
+import { getJwt } from "./service/jwt.service";
 
 const darkTheme = createTheme({
   palette: {
@@ -15,13 +16,16 @@ const darkTheme = createTheme({
   },
 });
 
+const jwt = getJwt();
+
 function App() {
   return (
     <ThemeProvider theme={ darkTheme }>
       <CssBaseline />
       <AuthProvider>
         <Routes>
-          <Route path="/login" element={ <Login/> }/>
+          <Route path="/login"
+                 element={jwt ? <Navigate to="/" /> : <Login />}/>
           <Route path="/" element={<LandingPage />} />
           <Route path="/sign-up" element={<SignUpPage />} />
           <Route element={<ProtectedLayout />}>

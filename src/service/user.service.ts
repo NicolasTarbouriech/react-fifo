@@ -1,7 +1,11 @@
 const USER_ID = 'userId'
 
-export function getUser(): string {
-  return sessionStorage.getItem(USER_ID)!;
+export function getUserLoggedIn(): string {
+  const user = sessionStorage.getItem(USER_ID);
+  if (!user) {
+    throw new Error("User not logged in");
+  }
+  return user;
 }
 
 export function setUser(userId: string) {

@@ -10,11 +10,11 @@ import { IUser } from "../interface/user.interface";
 import { IAction } from "../interface/action.interface";
 import { ActionsList } from "../component/actionsList.component";
 import { useSocketAction } from "../hook/useSocketAction.hook";
-import { getUser } from "../service/user.service";
+import { getUserLoggedIn } from "../service/user.service";
 
 export default function ActionPage() {
   const [type, setType] = React.useState<string>('');
-  const userId = getUser();
+  const userId = getUserLoggedIn();
   const { socket, actions, setActions, credits, setCredits } = useSocketAction(userId);
 
   useEffect(() => {
