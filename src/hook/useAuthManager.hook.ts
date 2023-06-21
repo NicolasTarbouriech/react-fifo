@@ -9,13 +9,12 @@ export function useAuthRequest() {
 
   const handleSubmit = async (email: string) => {
     try {
-      await axios.post<IUser>('/auth/sign-up', {
-          email
-        }
-      )
-      navigate('/login');
-   } catch (error) {
-      setState(error)
+      await axios.post<IUser>("/auth/sign-up", {
+        email,
+      });
+      navigate("/login");
+    } catch (error) {
+      setState(error);
     }
   };
 

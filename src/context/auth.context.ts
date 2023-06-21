@@ -5,5 +5,5 @@ export const AuthContext = createContext<ContextValue>({
   token: null,
   setToken: () => {},
   onLogin: async () => {},
-  onLogout: () => {}
+  onLogout: () => {},
 });

@@ -23,7 +23,13 @@ export default function ActionPage() {
         axios.get<IUser>("/user/" + userId),
         axios.get<IAction[]>("/action/" + userId)
       ]);
-      const {credits: {A, B, C}} = responseCredits.data;
+      const {
+        credits: {
+        A,
+        B,
+        C
+        }
+      } = responseCredits.data;
       setCredits([A, B, C]);
       setActions(responseActions.data);
     };

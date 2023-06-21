@@ -1,4 +1,4 @@
-const USER_ID = 'userId'
+const USER_ID = "userId";
 
 export function getUserLoggedIn(): string {
   const user = sessionStorage.getItem(USER_ID);

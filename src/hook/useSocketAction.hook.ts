@@ -25,14 +25,14 @@ export const useSocketAction = (userId: string) => {
       socket.on("actionDeleted", () => {
         Promise.all([
           axios.get<IAction[]>("/action/" + userId),
-          axios.get<IUser>("/user/" + userId)
+          axios.get<IUser>("/user/" + userId),
         ])
           .then(([responseActions, responseCredits]) => {
             setActions(responseActions.data);
             setCredits([
               responseCredits.data.credits.A,
               responseCredits.data.credits.B,
-              responseCredits.data.credits.C
+              responseCredits.data.credits.C,
             ]);
           })
           .catch((error) => {
@@ -42,7 +42,5 @@ export const useSocketAction = (userId: string) => {
     }
   }, [socket, setActions, setCredits, userId]);
 
-  return {socket, actions, setActions, credits, setCredits};
+  return { socket, actions, setActions, credits, setCredits };
 };
-
-
