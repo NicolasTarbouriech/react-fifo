@@ -1,11 +1,8 @@
-# Your Application Name
-Fifo web app
+# Fifo web app
 
 ## Running the Application
 To run the application, make sure your back-end is running and then use the following command:
 - npm run start
-
-Enjoy your time! :)
 
 ## Context
 - You can add a user when clic on "Sign up", then you will be redirect on login page.
@@ -19,3 +16,5 @@ Enjoy your time! :)
 ## Technos
 - I used material ui to design interface,
 - I used socket to communicate with back-end.
+
+Enjoy your time! :)
