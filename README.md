@@ -2,7 +2,7 @@
 Fifo web app
 
 ## Running the Application
-To run the application, use the following command:
+To run the application, make sure your back-end is running and then use the following command:
 - npm run start
 
 Enjoy your time! :)
