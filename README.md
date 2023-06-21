@@ -17,9 +17,5 @@ Enjoy your time! :)
 - If you have not anymore credits A and the next action is "A", you need to wait 24hours to recalculate all of your credits.
 
 ## Technos
-
-- I use cron socket to communicate with back-end.
-
-## Why not using BullMQ ?!
-- I discovered bullMQ library but after writing all my back code so it was too late to refacto all of my code with this lib.
-
+- I used material ui to design interface,
+- I used socket to communicate with back-end.
