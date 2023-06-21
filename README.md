@@ -18,7 +18,7 @@ Enjoy your time! :)
 
 ## Technos
 
-- I use cron job & socket to communicate with front-end.
+- I use cron socket to communicate with back-end.
 
 ## Why not using BullMQ ?!
 - I discovered bullMQ library but after writing all my back code so it was too late to refacto all of my code with this lib.
