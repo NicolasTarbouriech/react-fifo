@@ -1,6 +1,6 @@
-import { Button, Grid } from "@mui/material";
+import { Alert, Button, Grid } from "@mui/material";
 import SideBarComponent from "../component/sideBar.component";
-import React, { SyntheticEvent, useEffect } from "react";
+import React, { SyntheticEvent, useEffect, useState } from "react";
 import axios from "axios";
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
@@ -13,7 +13,9 @@ import { useSocketAction } from "../hook/useSocketAction.hook";
 import { getUserLoggedIn } from "../service/user.service";
 
 export default function ActionPage() {
-  const [type, setType] = React.useState<string>('');
+  const [type, setType] = useState<string>('');
+  const [showAlert, setShowAlert] = useState<boolean>(false);
+  const [showErrorAlert, setShowErrorAlert] = useState<boolean>(false);
   const userId = getUserLoggedIn();
   const { socket, actions, setActions, credits, setCredits } = useSocketAction(userId);
 
@@ -40,24 +42,31 @@ export default function ActionPage() {
     setType(event.target.value);
   };
 
-  async function handleAddAction(e: SyntheticEvent) {
+  async function handleAddAction() {
     const data = {
       type: type
     };
     axios.post("/user/" + userId + "/actions", data)
       .then(() => {
         axios.get<IAction[]>("/action/" + userId)
-          .then(async (response) => {
+          .then(response => {
             setActions(response.data);
+            setShowAlert(true)
           })
           .catch((error) => {
             console.error(error);
           });
       })
       .catch(error => {
+        setShowAlert(false);
+        setShowErrorAlert(true);
         console.error(error);
       });
   }
+
+  const handleAlertClose = () => {
+    setShowAlert(false);
+  };
 
   return (
     <Grid container spacing={ 2 } sx={ {height: '100%'} }>
@@ -72,6 +81,14 @@ export default function ActionPage() {
           <div style={ {margin: '5px'} }>B : { credits[1] }</div>
           <div style={ {margin: '5px'} }>C : { credits[2] }</div>
         </div>
+        {showAlert && (
+          <Alert severity="success" onClose={handleAlertClose}>
+            This is a success alert — action added!
+          </Alert>
+        )}
+        {showErrorAlert && (
+          <Alert severity="error">Failed to add action</Alert>
+        )}
         { actions.length > 0 ? (
           <ActionsList actions={ actions }/>
         ) : (
