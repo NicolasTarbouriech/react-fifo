@@ -6,11 +6,13 @@ import axios from 'axios';
 import { PropsChildren } from '../type/props.type';
 import { ContextValue, IAuth } from "../interface/authContext.interface";
 import { removeUser, setUser } from "../service/user.service";
+import { useAlertHook } from "../hook/useAlert.hook";
 
 export default function AuthProvider({children}: PropsChildren) {
   const jsonToken = getJwt();
   const [token, setToken] = useState<string | null>(jsonToken);
   const navigate = useNavigate();
+  const { setShowAlert, setShowErrorAlert } = useAlertHook();
 
   const updateJwt = (token: string | null) => {
     if (token) {
@@ -36,12 +38,17 @@ export default function AuthProvider({children}: PropsChildren) {
         updateJwt(accessToken);
         const payload = JSON.parse(atob(accessToken.split('.')[1]));
         if (payload && 'user' in payload) {
+          setShowAlert('Successfull Login !');
           const userId = payload.user._id;
           setUser(userId);
           navigate('/action')
         } else {
+          setShowErrorAlert('Failed to login');
           navigate('/login');
         }
+      })
+      .catch((err) => {
+        setShowErrorAlert(err.message);
       })
   };
 

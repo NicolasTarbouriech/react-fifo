@@ -1,11 +1,12 @@
-import { Alert, Box, Button, Container, Grid, TextField, Typography } from "@mui/material";
+import { Box, Button, Container, Grid, TextField, Typography } from "@mui/material";
 import SideBarComponent from "../component/sideBar.component";
 import React, { useState } from "react";
 import { useAuthRequest } from "../hook/useAuthManager.hook";
+import { AlertComponent } from "../component/alert.component";
 
 export default function SignUpPage() {
   const [email, setEmail] = useState('');
-  const { handleSubmit, state } = useAuthRequest();
+  const { handleSubmit, showAlert, showErrorAlert, handleAlertClose } = useAuthRequest();
 
   return (
     <Grid container spacing={ 2 } sx={ {height: '100%'} }>
@@ -19,7 +20,7 @@ export default function SignUpPage() {
             <Typography component="h1" variant="h5">
               Sign up
             </Typography>
-            { state && <Alert severity="error">{ state }</Alert> }
+            <AlertComponent showErrorAlert={showErrorAlert} showAlert={showAlert} handleAlertClose={handleAlertClose}/>
             <Box component="form" onSubmit={(e) => {
               e.preventDefault();
               handleSubmit(email)

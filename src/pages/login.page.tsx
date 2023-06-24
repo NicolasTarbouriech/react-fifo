@@ -1,6 +1,5 @@
-import { SyntheticEvent, useContext, useState } from 'react';
+import React, { SyntheticEvent, useContext, useState } from 'react';
 import {
-  Alert,
   Box,
   Button,
   Container, Grid,
@@ -10,6 +9,8 @@ import {
 import SideBarComponent from "../component/sideBar.component";
 import { AuthContext } from "../context/auth.context";
 import { ContextValue } from "../interface/authContext.interface";
+import { useAlertHook } from "../hook/useAlert.hook";
+import { AlertComponent } from "../component/alert.component";
 
 const sx = {
   box: {
@@ -32,19 +33,14 @@ const sx = {
 };
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [error, setError] = useState<string | null>(null);
-  const auth: ContextValue | null = useContext(AuthContext);
+  const [email, setEmail] = useState('');const auth: ContextValue | null = useContext(AuthContext);
+  const { handleAlertClose, showAlert, showErrorAlert } = useAlertHook();
 
   async function handleSubmit(e: SyntheticEvent) {
     e.preventDefault();
     // ! to say onLogin exist
-    auth!
+    await auth!
       .onLogin(email)
-      .then()
-      .catch((err) => {
-        setError(err.message);
-      });
   }
 
   return (
@@ -59,7 +55,7 @@ export default function LoginPage() {
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
-            {error && <Alert severity="error">{error}</Alert>}
+            <AlertComponent showErrorAlert={showErrorAlert} showAlert={showAlert} handleAlertClose={handleAlertClose}/>
             <Box component="form" onSubmit={ handleSubmit } noValidate>
               <TextField
                 type="email"

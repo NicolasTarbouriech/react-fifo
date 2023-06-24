@@ -50,7 +50,7 @@ export default function SideBarComponent() {
         {
           label: 'Login',
           icon: <LoginIcon fontSize="small" />,
-          path: '/',
+          path: '/login',
         }
       ])
   ];
