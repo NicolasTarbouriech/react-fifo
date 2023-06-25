@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useContext, useState } from 'react';
+import { SyntheticEvent, useContext, useState } from 'react';
 import {
   Box,
   Button,
@@ -33,8 +33,9 @@ const sx = {
 };
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');const auth: ContextValue | null = useContext(AuthContext);
-  const { handleAlertClose, showAlert, showErrorAlert } = useAlertHook();
+  const [email, setEmail] = useState<string>('');
+  const auth: ContextValue | null = useContext(AuthContext);
+  const {handleAlertClose, showAlert, showErrorAlert} = useAlertHook();
 
   async function handleSubmit(e: SyntheticEvent) {
     e.preventDefault();
@@ -55,24 +56,28 @@ export default function LoginPage() {
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
-            <AlertComponent showErrorAlert={showErrorAlert} showAlert={showAlert} handleAlertClose={handleAlertClose}/>
+            <AlertComponent
+              showErrorAlert={ showErrorAlert }
+              showAlert={ showAlert }
+              handleAlertClose={ handleAlertClose }
+            />
             <Box component="form" onSubmit={ handleSubmit } noValidate>
               <TextField
                 type="email"
                 label="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={ email }
+                onChange={ (e) => setEmail(e.target.value) }
                 margin="normal"
                 required
                 fullWidth
-                autoFocus={true}
+                autoFocus={ true }
               />
               <Button
                 type="submit"
-                disabled={!email}
+                disabled={ !email }
                 fullWidth
                 variant="contained"
-                sx={sx.buttonSubmit}
+                sx={ sx.buttonSubmit }
               >
                 Sign in
               </Button>

@@ -4,10 +4,10 @@ export function useAlertHook() {
   const [showAlert, setShowAlert] = useState<string>('');
   const [showErrorAlert, setShowErrorAlert] = useState<string>('');
 
-   const handleAlertClose = () => {
+  const handleAlertClose = () => {
     setShowAlert('');
-    setShowErrorAlert('')
+    setShowErrorAlert('');
   };
 
-   return { handleAlertClose, showAlert, setShowAlert, showErrorAlert, setShowErrorAlert }
+  return {handleAlertClose, showAlert, setShowAlert, showErrorAlert, setShowErrorAlert}
 }
