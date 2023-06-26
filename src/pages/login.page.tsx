@@ -11,6 +11,9 @@ import { AuthContext } from "../context/auth.context";
 import { ContextValue } from "../interface/authContext.interface";
 import { useAlertHook } from "../hook/useAlert.hook";
 import { AlertComponent } from "../component/alert.component";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { schema } from "../util/validation.util";
 
 const sx = {
   box: {
@@ -33,15 +36,21 @@ const sx = {
 };
 
 export default function LoginPage() {
-  const [email, setEmail] = useState<string>('');
   const auth: ContextValue | null = useContext(AuthContext);
   const {handleAlertClose, showAlert, showErrorAlert} = useAlertHook();
 
-  async function handleSubmit(e: SyntheticEvent) {
-    e.preventDefault();
-    // ! to say onLogin exist
-    await auth!
-      .onLogin(email)
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(schema),
+  });
+
+  async function onSubmit(e: string) {
+      // ! to say onLogin exist
+      await auth!
+        .onLogin(e)
   }
 
   return (
@@ -61,27 +70,26 @@ export default function LoginPage() {
               showAlert={ showAlert }
               handleAlertClose={ handleAlertClose }
             />
-            <Box component="form" onSubmit={ handleSubmit } noValidate>
+            <form onSubmit={ handleSubmit((data) => onSubmit(data.email)) } noValidate>
               <TextField
-                type="email"
+                type="input"
                 label="Email"
-                value={ email }
-                onChange={ (e) => setEmail(e.target.value) }
                 margin="normal"
-                required
                 fullWidth
+                {...register('email')}
                 autoFocus={ true }
+                error={!!errors.email}
+                helperText={(!!errors.email && "wrong email format or email dont exist in base")}
               />
               <Button
                 type="submit"
-                disabled={ !email }
                 fullWidth
                 variant="contained"
                 sx={ sx.buttonSubmit }
               >
                 Sign in
               </Button>
-            </Box>
+            </form>
           </Box>
         </Container>
       </Grid>

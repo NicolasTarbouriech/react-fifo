@@ -7,7 +7,7 @@ export function useAuthRequest() {
   const navigate = useNavigate();
   const { showAlert, showErrorAlert, setShowAlert, setShowErrorAlert, handleAlertClose } = useAlertHook();
 
-  const handleSubmit = async (email: string) => {
+  const onSubmit = async (email: string) => {
     try {
       await axios.post<IUser>("/auth/sign-up", {
         email,
@@ -19,5 +19,5 @@ export function useAuthRequest() {
     }
   };
 
-  return { handleSubmit, setShowAlert, setShowErrorAlert, showAlert, showErrorAlert, handleAlertClose };
+  return { onSubmit, setShowAlert, setShowErrorAlert, showAlert, showErrorAlert, handleAlertClose };
 }

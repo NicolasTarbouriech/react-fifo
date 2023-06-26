@@ -1,12 +1,22 @@
 import { Box, Button, Container, Grid, TextField, Typography } from "@mui/material";
 import SideBarComponent from "../component/sideBar.component";
-import { useState } from "react";
 import { useAuthRequest } from "../hook/useAuthManager.hook";
 import { AlertComponent } from "../component/alert.component";
+import { useForm } from "react-hook-form";
+import { zodResolver } from '@hookform/resolvers/zod';
+import React from 'react';
+import { schema } from "../util/validation.util";
 
 export default function SignUpPage() {
-  const [email, setEmail] = useState<string>('');
-  const {handleSubmit, showAlert, showErrorAlert, handleAlertClose} = useAuthRequest();
+  const {onSubmit, showAlert, showErrorAlert, handleAlertClose} = useAuthRequest();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(schema),
+  });
 
   return (
     <Grid container spacing={ 2 } sx={ {height: '100%'} }>
@@ -21,29 +31,25 @@ export default function SignUpPage() {
               Sign up
             </Typography>
             <AlertComponent showErrorAlert={showErrorAlert} showAlert={showAlert} handleAlertClose={handleAlertClose}/>
-            <Box component="form" onSubmit={(e) => {
-              e.preventDefault();
-              handleSubmit(email)
-            }} noValidate>
+            <form onSubmit={handleSubmit((data) => onSubmit(data.email))} noValidate>
               <TextField
-                type="email"
+                type="input"
                 label="Email"
-                value={ email }
-                onChange={ (e) => setEmail(e.target.value) }
                 margin="normal"
-                required
                 fullWidth
+                {...register('email')}
                 autoFocus={ true }
+                error={!!errors.email}
+                helperText={!!errors.email && "wrong email format"}
               />
               <Button
                 type="submit"
-                disabled={ !email }
                 fullWidth
                 variant="contained"
               >
                 Submit
               </Button>
-            </Box>
+            </form>
           </Box>
         </Container>
       </Grid>
