@@ -9,7 +9,6 @@ import ProtectedLayout from "./layout/protected.layout";
 import AuthProvider from "./provider/Auth.provider";
 import SignUpPage from "./pages/signUp.page";
 import { getJwt } from "./service/jwt.service";
-import { AlertContainer } from "./layout/alert.container";
 
 const darkTheme = createTheme({
   palette: {
@@ -33,7 +32,6 @@ function App() {
             <Route path="/action" element={<ActionPage />} />
           </Route>
         </Routes>
-        <AlertContainer/>
       </AuthProvider>
     </ThemeProvider>
   );
