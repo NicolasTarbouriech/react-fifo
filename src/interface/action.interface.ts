@@ -15,3 +15,6 @@ export interface IAction {
   owner: string;
 }
 
+export interface PropsActions {
+  actions: IAction[]
+}

@@ -1,6 +1,7 @@
 import { Alert } from "@mui/material";
+import { AlertProps } from "../interface/alert.interface";
 
-export function AlertComponent(props: { showErrorAlert: string, showAlert: string, handleAlertClose: any }) {
+export function AlertComponent(props: AlertProps) {
   return (<>
       { props.showAlert.length > 0 && (
          <Alert sx={ {position: "absolute", bottom: "30px"} } variant="outlined" severity="success"
