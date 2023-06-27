@@ -49,6 +49,7 @@ export default function ActionPage() {
     };
     axios.post("/user/" + userId + "/actions", data)
       .then(() => {
+        setShowErrorAlert('');
         axios.get<IAction[]>("/action/" + userId)
           .then(response => {
             setActions(response.data);

@@ -4,7 +4,7 @@ import { AlertProps } from "../interface/alert.interface";
 export function AlertComponent(props: AlertProps) {
   return (<>
       { props.showAlert.length > 0 && (
-         <Alert sx={ {position: "absolute", bottom: "30px"} } variant="outlined" severity="success"
+         <Alert variant="outlined" severity="success"
                  onClose={ props.handleAlertClose }>
             { props.showAlert }
           </Alert>
