@@ -1,4 +1,4 @@
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, SelectChangeEvent } from "@mui/material";
 import SideBarComponent from "../component/sideBar.component";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -39,7 +39,7 @@ export default function ActionPage() {
     fetchUserAndActions();
   }, [userId]);
 
-  const handleSelectChange = (event: any) => {
+  const handleSelectChange = (event: SelectChangeEvent) => {
     setType(event.target.value);
   };
 

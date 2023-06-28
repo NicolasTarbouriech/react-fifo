@@ -1,4 +1,4 @@
-export function formatDate(date: any) {
+export function formatDate(date: Date) {
   const createdAtDate = new Date(date);
   const formattedDate = `${createdAtDate.getDate()}/${
     createdAtDate.getMonth() + 1

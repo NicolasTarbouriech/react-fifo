@@ -10,8 +10,8 @@ export type ActionTypes = (typeof actionTypeEnum)[number];
 export interface IAction {
   type: ActionTypes;
   credits: number;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
   owner: string;
 }
 
